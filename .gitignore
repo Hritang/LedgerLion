@@ -1,0 +1,26 @@
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+service-account.json
+*.json.key
+
+# Python virtual environment
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Generated files
+uploads/*
+exports/*
+!uploads/.gitkeep
+!exports/.gitkeep
+
+# IDE and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
