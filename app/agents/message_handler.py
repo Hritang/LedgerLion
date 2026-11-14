@@ -33,9 +33,15 @@ async def handle_nonilion_event(event: dict):
                 "unavailable. Please try again shortly."
             )
 
-    await send_reply(
-        api_base=api_base,
-        event_type=event_type,
-        text=reply,
-        message_id=message_id,
-    )
+
+    try:
+        status = await send_reply(
+            api_base=api_base,
+            event_type=event_type,
+            text=reply,
+            message_id=message_id,
+        )
+        print(f"[LedgerLion] Reply sent successfully: HTTP {status}")
+    except Exception as e:
+        print(f"[LedgerLion] Failed to send reply: {type(e).__name__}: {e}")
+        raise
