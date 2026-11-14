@@ -75,5 +75,8 @@ async def nonilion_webhook(request: Request, background_tasks: BackgroundTasks):
         raise HTTPException(status_code=400, detail="Event must be a JSON object")
 
     # Acknowledge immediately; Nonilion waits only five seconds.
+
+    print(f"[LedgerLion] Webhook received event type: {event.get('type')}", flush=True)
+
     background_tasks.add_task(handle_nonilion_event, event)
     return {"ok": True}
