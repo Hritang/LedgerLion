@@ -6,17 +6,16 @@ SUPPORTED_TYPES = {"console_message", "room_mention", "chat", "nearby", "test"}
 
 
 async def handle_nonilion_event(event: dict):
-    print(f"[LedgerLion] Handler started. Event: {event}", flush=True)
+    print("[LedgerLion] Handler started.", flush=True)
 
     try:
         event_type = event.get("type", "")
 
         if event_type == "test":
-            print("[LedgerLion] Test event ignored.", flush=True)
             return
 
         if event_type not in SUPPORTED_TYPES:
-            print(f"[LedgerLion] Unsupported event type: {event_type}", flush=True)
+            print(f"[LedgerLion] Unsupported event: {event_type}", flush=True)
             return
 
         text = (event.get("text") or "").strip()
@@ -28,25 +27,29 @@ async def handle_nonilion_event(event: dict):
 
         if not text:
             reply = (
-                "I'm LedgerLion, your AI bookkeeping assistant. Send me a bill "
-                "or ask a question about your business transactions."
+                "I'm LedgerLion, your AI bookkeeping assistant. "
+                "Send me a bill or ask a question about your transactions."
             )
         else:
             try:
                 print("[LedgerLion] Generating AI reply...", flush=True)
-                reply = generate_agent_reply(
+
+                reply = await generate_agent_reply(
                     user_text=text,
                     event_context=event.get("instructions", "")
                 )
+
                 print("[LedgerLion] AI reply generated.", flush=True)
+
             except Exception as exc:
                 print(
                     f"[LedgerLion] Gemini error: {type(exc).__name__}: {exc}",
                     flush=True
                 )
+
                 reply = (
-                    "I received your message, but my AI service is temporarily "
-                    "unavailable. Please try again shortly."
+                    "My AI service is temporarily unavailable. "
+                    "Please try again shortly."
                 )
 
         print("[LedgerLion] Sending reply to Nonilion...", flush=True)
